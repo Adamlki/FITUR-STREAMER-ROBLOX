@@ -1,0 +1,24 @@
+{
+  "name": "StreamerPro_Standalone",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage"
+    },
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "StreamerProServer": {
+        "$path": "src/server"
+      }
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "StreamerProClient": {
+          "$path": "src/client"
+        }
+      }
+    }
+  }
+}
