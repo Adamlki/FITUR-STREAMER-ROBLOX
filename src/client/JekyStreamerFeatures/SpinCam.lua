@@ -22,7 +22,7 @@ local spinAngle = 0
 local isSpinning = false
 local originalCameraType = nil
 
-function Feature.Trigger(player, duration)
+function Feature.TriggerJeky(player, duration)
     local timeAdded = (duration and type(duration) == "number" and duration > 0) and duration or CONFIG.DEFAULT_DURATION
     local spinTime = player:FindFirstChild("SpinCamTime")
     if not spinTime then
@@ -35,7 +35,7 @@ function Feature.Trigger(player, duration)
     spinTime.Value = spinTime.Value + timeAdded
 end
 
-function Feature.Update(deltaTime)
+function Feature.UpdateJeky(deltaTime)
     local player = Players.LocalPlayer
     if not player then return end
     

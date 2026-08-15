@@ -11,7 +11,7 @@
 
 local Feature = {}
 
-function Feature.Trigger(player, duration)
+function Feature.TriggerJeky(player, duration)
     local jailTime = player:FindFirstChild("JailTime")
     if jailTime then
         jailTime.Value = jailTime.Value - duration

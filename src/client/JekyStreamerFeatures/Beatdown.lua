@@ -91,7 +91,7 @@ local function DoBeatdownHit(player, nailong)
     end)
 end
 
-function Feature.Trigger(player, duration)
+function Feature.TriggerJeky(player, duration)
     local timeAdded = (duration and type(duration) == "number" and duration > 0) and duration or CONFIG.DEFAULT_DURATION
     
     local beatdownTime = player:FindFirstChild("BeatdownTime")
@@ -105,7 +105,7 @@ function Feature.Trigger(player, duration)
     beatdownTime.Value = beatdownTime.Value + timeAdded
 end
 
-function Feature.Update(deltaTime)
+function Feature.UpdateJeky(deltaTime)
     for _, player in ipairs({Players.LocalPlayer}) do
         local beatdownTime = player:FindFirstChild("BeatdownTime")
         if beatdownTime and beatdownTime.Value > 0 then

@@ -22,7 +22,7 @@ local CONFIG = {
 
 local Feature = {}
 
-function Feature.Trigger(player, duration)
+function Feature.TriggerJeky(player, duration)
     local character = player.Character
     if not character then return end
     
@@ -36,7 +36,7 @@ function Feature.Trigger(player, duration)
     if nailongTemplate then
         local nailong = nailongTemplate:Clone()
         
-        local spawnOffset = CFrame.new(0, 0, -3) -- 3 studs forward
+        local spawnOffset = CFrame.new(0, 0, 3) -- 3 studs back
         local spawnPos = (hrp.CFrame * spawnOffset).Position
         
         nailong:PivotTo(CFrame.new(spawnPos, hrp.Position))
@@ -75,7 +75,7 @@ function Feature.Trigger(player, duration)
         warn("Model '" .. CONFIG.MODEL_NAME .. "' not found in ReplicatedStorage.Models! Continuing without visual.")
     end
     
-    local direction = -hrp.CFrame.LookVector
+    local direction = hrp.CFrame.LookVector
     
     local hitSound = Instance.new("Sound")
     hitSound.SoundId = CONFIG.SOUND_ID

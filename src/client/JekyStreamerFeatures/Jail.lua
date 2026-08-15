@@ -19,7 +19,7 @@ local CONFIG = {
 
 local Feature = {}
 
-function Feature.Trigger(player, duration)
+function Feature.TriggerJeky(player, duration)
     local jailTime = player:FindFirstChild("JailTime")
     if not jailTime then return end
     
@@ -68,7 +68,7 @@ function Feature.Trigger(player, duration)
     end
 end
 
-function Feature.Update(deltaTime)
+function Feature.UpdateJeky(deltaTime)
     for _, player in ipairs({Players.LocalPlayer}) do
         local jailTime = player:FindFirstChild("JailTime")
         if jailTime and jailTime.Value > 0 then

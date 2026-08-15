@@ -22,7 +22,7 @@ local CONFIG = {
 
 local Feature = {}
 
-function Feature.Trigger(player, duration)
+function Feature.TriggerJeky(player, duration)
     local character = player.Character
     if character and character:FindFirstChild("HumanoidRootPart") then
         local humanoid = character:FindFirstChildOfClass("Humanoid")

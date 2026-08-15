@@ -65,7 +65,7 @@ end
 local currentSelectedFeature = CONFIG_FEATURES[1]
 
 local loadedFeatures = {}
-local featuresFolder = script.Parent:FindFirstChild("StreamerFeatures")
+local featuresFolder = script.Parent:FindFirstChild("JekyStreamerFeatures")
 if featuresFolder then
     for _, module in ipairs(featuresFolder:GetChildren()) do
         if module:IsA("ModuleScript") then
@@ -100,8 +100,8 @@ end)
 
 RunService.Heartbeat:Connect(function(deltaTime)
     for _, featureModule in pairs(loadedFeatures) do
-        if type(featureModule.Update) == "function" then
-            featureModule.Update(deltaTime)
+        if type(featureModule.UpdateJeky) == "function" then
+            featureModule.UpdateJeky(deltaTime)
         end
     end
 end)
@@ -332,9 +332,9 @@ function renderContent()
     
     runTestBtn.MouseButton1Click:Connect(function()
         local featureModule = loadedFeatures[currentSelectedFeature]
-        if featureModule and type(featureModule.Trigger) == "function" then
+        if featureModule and type(featureModule.TriggerJeky) == "function" then
             local testVal = tonumber(boxTestTime.Text) or 5
-            featureModule.Trigger(player, testVal)
+            featureModule.TriggerJeky(player, testVal)
         end
     end)
     
@@ -413,8 +413,8 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
                     local sc = string.upper(config.shortcut)
                     if sc == pressedName or sc == pressedString then
                         local featureModule = loadedFeatures[featureName]
-                        if featureModule and type(featureModule.Trigger) == "function" then
-                            featureModule.Trigger(player, tonumber(config.time) or 5)
+                        if featureModule and type(featureModule.TriggerJeky) == "function" then
+                            featureModule.TriggerJeky(player, tonumber(config.time) or 5)
                         end
                     end
                 end

@@ -21,7 +21,7 @@ local CONFIG = {
 
 local Feature = {}
 
-function Feature.Trigger(player, duration)
+function Feature.TriggerJeky(player, duration)
     local character = player.Character
     if not character then return end
     
@@ -70,7 +70,7 @@ function Feature.Trigger(player, duration)
     end
 end
 
-function Feature.Update(deltaTime)
+function Feature.UpdateJeky(deltaTime)
     for _, player in ipairs({Players.LocalPlayer}) do
         local slimTime = player:FindFirstChild("SlimTime")
         if slimTime and slimTime.Value > 0 then

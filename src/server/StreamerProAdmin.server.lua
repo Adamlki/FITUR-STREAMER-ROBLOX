@@ -25,7 +25,7 @@ local CONFIG = {
     }
 }
 
-local function getOrCreateRemote(className, name)
+local function getOrCreateRemoteJeky(className, name)
     local remote = ReplicatedStorage:FindFirstChild(name)
     if not remote then
         remote = Instance.new(className)
@@ -35,17 +35,17 @@ local function getOrCreateRemote(className, name)
     return remote
 end
 
-local AdminFunc = getOrCreateRemote("RemoteFunction", "StreamerProAdminFunction")
-local AccessEvent = getOrCreateRemote("RemoteEvent", "StreamerProAccessEvent") 
+local AdminFunc = getOrCreateRemoteJeky("RemoteFunction", "StreamerProAdminFunction")
+local AccessEvent = getOrCreateRemoteJeky("RemoteEvent", "StreamerProAccessEvent") 
 
 local playerAccessCache = {}
 
-local function IsAdmin(player)
+local function IsAdminJeky(player)
     return CONFIG.ADMIN_USER_IDS[player.UserId] == true or player.UserId == game.CreatorId
 end
 
 -- Mengecek akses player dan memberi tahu Client UI-nya
-local function CheckPlayerAccess(player)
+local function CheckPlayerAccessJeky(player)
     local hasAccess = false
     local success, accessData = pcall(function()
         return StreamerAccessDS:GetAsync(tostring(player.UserId))
@@ -60,16 +60,16 @@ local function CheckPlayerAccess(player)
     end
     
     playerAccessCache[player.UserId] = hasAccess
-    AccessEvent:FireClient(player, hasAccess, IsAdmin(player))
+    AccessEvent:FireClient(player, hasAccess, IsAdminJeky(player))
 end
 
 Players.PlayerAdded:Connect(function(player)
     task.wait(2)
-    CheckPlayerAccess(player)
+    CheckPlayerAccessJeky(player)
 end)
 
 AdminFunc.OnServerInvoke = function(player, action, data)
-    if not IsAdmin(player) then 
+    if not IsAdminJeky(player) then 
         return {success = false, message = "Not Authorized"} 
     end
     
@@ -138,7 +138,7 @@ AdminFunc.OnServerInvoke = function(player, action, data)
         if success then
             local targetPlayer = Players:GetPlayerByUserId(targetUserId)
             if targetPlayer then
-                CheckPlayerAccess(targetPlayer)
+                CheckPlayerAccessJeky(targetPlayer)
             end
             
             pcall(function()
@@ -177,7 +177,7 @@ AdminFunc.OnServerInvoke = function(player, action, data)
         if success then
             local targetPlayer = Players:GetPlayerByUserId(targetUserId)
             if targetPlayer then
-                CheckPlayerAccess(targetPlayer)
+                CheckPlayerAccessJeky(targetPlayer)
             end
             
             pcall(function()
