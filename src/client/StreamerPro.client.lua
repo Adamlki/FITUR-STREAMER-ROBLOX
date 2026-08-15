@@ -1,4 +1,4 @@
-﻿-- =================================================================================
+-- =================================================================================
 --  ██████╗ ███╗   ███╗███████╗    ███████╗████████╗██╗   ██╗██████╗ ██╗ ██████╗ 
 --  ██╔══██╗████╗ ████║██╔════╝    ██╔════╝╚══██╔══╝██║   ██║██╔══██╗██║██╔═══██╗
 --  ██║  ██║██╔████╔██║███████╗    ███████╗   ██║   ██║   ██║██║  ██║██║██║   ██║
@@ -37,13 +37,13 @@ local CONFIG_INSTANT_FEATURES = {
 }
 
 local CONFIG_HUD_TIMERS = {
-    JailTime = "ðŸ”’ Jail",
-    SlimTime = "ðŸ•´ï¸ Slim",
-    DrunkTime = "ðŸ¥´ Drunk",
-    BeatdownTime = "ðŸ‘Š Beatdown",
-    SpinCamTime = "ðŸŒ€ SpinCam",
-    RocketTime = "ðŸš€ Rocket",
-    RocketBomTime = "ðŸš€ðŸ’£ Rocket+Bom"
+    JailTime = "🔒 Jail",
+    SlimTime = "🕺 Slim",
+    DrunkTime = "🥴 Drunk",
+    BeatdownTime = "👊 Beatdown",
+    SpinCamTime = "🌀 SpinCam",
+    RocketTime = "🚀 Rocket",
+    RocketBomTime = "🚀💣 Rocket+Bom"
 }
 
 local CONFIG_COLORS = {
@@ -117,6 +117,7 @@ local FrameBtn = ScreenGui:WaitForChild("FrameBtn")
 local ToggleBtn = FrameBtn:WaitForChild("ToggleBtn")
 local MainWindow = ScreenGui:WaitForChild("MainWindow")
 local MainWindowGroup = MainWindow:WaitForChild("MainWindowGroup")
+local SaveConfigBtn = MainWindow:WaitForChild("SaveConfigBtn")
 local TitleBar = MainWindowGroup:WaitForChild("TitleBar")
 local CloseBtn = TitleBar:WaitForChild("CloseBtn")
 local Body = MainWindowGroup:WaitForChild("Body")
@@ -205,6 +206,58 @@ ToggleBtn.MouseButton1Click:Connect(function()
     end
 end)
 CloseBtn.MouseButton1Click:Connect(closeWindow)
+
+local function showNotification(message)
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0, 0, 0, 35)
+    frame.BackgroundColor3 = CONFIG_COLORS.itemBg
+    frame.BackgroundTransparency = 1
+    frame.Parent = HudContainer
+    
+    local stroke = Instance.new("UIStroke")
+    stroke.Color = Color3.fromRGB(80, 80, 80)
+    stroke.Thickness = 1
+    stroke.Transparency = 1
+    stroke.Parent = frame
+    
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 4)
+    corner.Parent = frame
+    
+    local lbl = Instance.new("TextLabel")
+    lbl.Size = UDim2.new(1, 0, 1, 0)
+    lbl.BackgroundTransparency = 1
+    lbl.Font = Enum.Font.GothamBold
+    lbl.TextSize = 14
+    lbl.TextColor3 = Color3.fromRGB(100, 255, 100)
+    lbl.TextTransparency = 1
+    lbl.Text = message
+    lbl.Parent = frame
+    
+    tween(frame, {Size = UDim2.new(1, 0, 0, 35), BackgroundTransparency = 0}, 0.3)
+    tween(stroke, {Transparency = 0}, 0.3)
+    tween(lbl, {TextTransparency = 0}, 0.3)
+    
+    task.delay(3, function()
+        tween(frame, {Size = UDim2.new(0, 0, 0, 35), BackgroundTransparency = 1}, 0.3)
+        tween(stroke, {Transparency = 1}, 0.3)
+        tween(lbl, {TextTransparency = 1}, 0.3)
+        task.delay(0.3, function()
+            frame:Destroy()
+        end)
+    end)
+end
+
+SaveConfigBtn.MouseButton1Click:Connect(function()
+    SaveConfigBtn.Text = "Saving..."
+    local SaveConfigEvent = ReplicatedStorage:FindFirstChild("StreamerProSaveConfigEvent")
+    if SaveConfigEvent then
+        SaveConfigEvent:FireServer(savedConfigs)
+    end
+    task.wait(1)
+    SaveConfigBtn.Text = "Save Config"
+    showNotification("✅ Config Saved!")
+end)
 
 local renderContent
 
@@ -459,13 +512,27 @@ local AccessEvent = ReplicatedStorage:WaitForChild("StreamerProAccessEvent", 5)
 
 -- Initial Status
 if AccessEvent then
-    AccessEvent.OnClientEvent:Connect(function(hasAccess, isAdmin)
+    AccessEvent.OnClientEvent:Connect(function(hasAccess, isAdmin, loadedConfig)
         ToggleBtn.Visible = hasAccess
         if not hasAccess and MainWindow.Visible then closeWindow() end
         
         AdminBtn.Visible = isAdmin
         if not isAdmin and AdminWindow.Visible then
             AdminWindow.Visible = false
+        end
+        
+        if hasAccess and loadedConfig then
+            for feature, configs in pairs(loadedConfig) do
+                if savedConfigs[feature] then
+                    savedConfigs[feature] = configs
+                end
+            end
+            if currentSelectedFeature and type(renderContent) == "function" then renderContent() end
+        elseif not hasAccess then
+            for _, feature in ipairs(CONFIG_FEATURES) do
+                savedConfigs[feature] = {}
+            end
+            if currentSelectedFeature and type(renderContent) == "function" then renderContent() end
         end
     end)
 end
@@ -598,7 +665,7 @@ SearchBtn.MouseButton1Click:Connect(function()
     SearchBtn.Text = "..."
     if not AdminFunc then return end
     local res = AdminFunc:InvokeServer("SearchPlayer", {Username = q})
-    SearchBtn.Text = "ðŸ” Search"
+    SearchBtn.Text = "🔍 Search"
     
     if res and res.success then
         selectedUserId = res.data.UserId
