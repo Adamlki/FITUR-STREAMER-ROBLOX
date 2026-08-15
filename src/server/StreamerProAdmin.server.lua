@@ -1,27 +1,30 @@
-﻿-- ==========================================================
--- FITUR BY DMS STUDIO - TIKTOK : jekychen01
--- ==========================================================
-
+﻿-- =================================================================================
+--  ██████╗ ███╗   ███╗███████╗    ███████╗████████╗██╗   ██╗██████╗ ██╗ ██████╗ 
+--  ██╔══██╗████╗ ████║██╔════╝    ██╔════╝╚══██╔══╝██║   ██║██╔══██╗██║██╔═══██╗
+--  ██║  ██║██╔████╔██║███████╗    ███████╗   ██║   ██║   ██║██║  ██║██║██║   ██║
+--  ██║  ██║██║╚██╔╝██║╚════██║    ╚════██║   ██║   ██║   ██║██║  ██║██║██║   ██║
+--  ██████╔╝██║ ╚═╝ ██║███████║    ███████║   ██║   ╚██████╔╝██████╔╝██║╚██████╔╝
+--  ╚═════╝ ╚═╝     ╚═╝╚══════╝    ╚══════╝   ╚═╝    ╚═════╝ ╚═════╝ ╚═╝ ╚═════╝ 
+-- 
+--                    T I K T O K  :  j e k y c h e n 0 1
+-- =================================================================================
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local DataStoreService = game:GetService("DataStoreService")
 
--- Gunakan versi DataStore agar tidak bentrok
 local StreamerAccessDS = DataStoreService:GetDataStore("StreamerPro_AccessStore_v1")
 
 -- ==========================================
--- âš™ï¸ CONFIGURATION SETTINGS
+-- CONFIGURATION
 -- ==========================================
 local CONFIG = {
     -- Masukkan UserId pemain yang boleh menjadi Admin (Bisa lebih dari 1)
     ADMIN_USER_IDS = {
         [8978185974] = true, -- Contoh
-        -- [12345678] = true,
+        [12345678] = true, -- Contoh
     }
 }
--- ==========================================
 
--- Fungsi pembuat Remote otomatis
 local function getOrCreateRemote(className, name)
     local remote = ReplicatedStorage:FindFirstChild(name)
     if not remote then
@@ -33,7 +36,7 @@ local function getOrCreateRemote(className, name)
 end
 
 local AdminFunc = getOrCreateRemote("RemoteFunction", "StreamerProAdminFunction")
-local AccessEvent = getOrCreateRemote("RemoteEvent", "StreamerProAccessEvent")
+local AccessEvent = getOrCreateRemote("RemoteEvent", "StreamerProAccessEvent") 
 
 local playerAccessCache = {}
 
@@ -52,25 +55,19 @@ local function CheckPlayerAccess(player)
         if accessData.Expiration == -1 or accessData.Expiration > os.time() then
             hasAccess = true
         else
-            -- Sudah kedaluwarsa
             pcall(function() StreamerAccessDS:RemoveAsync(tostring(player.UserId)) end)
         end
     end
     
     playerAccessCache[player.UserId] = hasAccess
-    
-    -- Kirim event ke client (bool hasAccess, bool isAdmin)
     AccessEvent:FireClient(player, hasAccess, IsAdmin(player))
 end
 
--- Listener ketika pemain masuk server
 Players.PlayerAdded:Connect(function(player)
-    -- Tunggu sebentar memastikan client siap menerima event
     task.wait(2)
     CheckPlayerAccess(player)
 end)
 
--- API untuk Admin Panel
 AdminFunc.OnServerInvoke = function(player, action, data)
     if not IsAdmin(player) then 
         return {success = false, message = "Not Authorized"} 
@@ -123,7 +120,7 @@ AdminFunc.OnServerInvoke = function(player, action, data)
         
     elseif action == "GrantAccess" then
         local targetUserId = data.UserId
-        local durationDays = data.DurationDays -- -1 untuk permanen
+        local durationDays = data.DurationDays
         
         local expiration = -1
         if durationDays > 0 then
@@ -139,13 +136,11 @@ AdminFunc.OnServerInvoke = function(player, action, data)
         end)
         
         if success then
-            -- Jika player yang diberi fitur sedang online, langsung update UI-nya!
             local targetPlayer = Players:GetPlayerByUserId(targetUserId)
             if targetPlayer then
                 CheckPlayerAccess(targetPlayer)
             end
             
-            -- Simpan ke list global untuk keperluan Admin Panel
             pcall(function()
                 local activeList = StreamerAccessDS:GetAsync("GlobalActiveList") or {}
                 local exists = false
@@ -231,7 +226,6 @@ AdminFunc.OnServerInvoke = function(player, action, data)
                 end
             end
             
-            -- Jika ada yang kedaluwarsa, update list
             if changed then
                 pcall(function() StreamerAccessDS:SetAsync("GlobalActiveList", cleanedList) end)
             end
