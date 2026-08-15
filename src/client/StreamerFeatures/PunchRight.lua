@@ -1,3 +1,7 @@
+﻿-- ==========================================================
+-- FITUR BY DMS STUDIO - TIKTOK : jekychen01
+-- ==========================================================
+
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local TweenService = game:GetService("TweenService")
 

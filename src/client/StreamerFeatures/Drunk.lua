@@ -1,3 +1,7 @@
+﻿-- ==========================================================
+-- FITUR BY DMS STUDIO - TIKTOK : jekychen01
+-- ==========================================================
+
 local CONFIG = {
     DEFAULT_DURATION = 15,                          -- Waktu default efek mabuk (detik)
     BLUR_SIZE = 15,                                 -- Tingkat keburaman layar (blur)

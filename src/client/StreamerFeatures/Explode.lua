@@ -1,3 +1,7 @@
+﻿-- ==========================================================
+-- FITUR BY DMS STUDIO - TIKTOK : jekychen01
+-- ==========================================================
+
 local Debris = game:GetService("Debris")
 
 local CONFIG = {

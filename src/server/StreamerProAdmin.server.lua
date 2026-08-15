@@ -1,3 +1,7 @@
+﻿-- ==========================================================
+-- FITUR BY DMS STUDIO - TIKTOK : jekychen01
+-- ==========================================================
+
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local DataStoreService = game:GetService("DataStoreService")
@@ -6,7 +10,7 @@ local DataStoreService = game:GetService("DataStoreService")
 local StreamerAccessDS = DataStoreService:GetDataStore("StreamerPro_AccessStore_v1")
 
 -- ==========================================
--- ⚙️ CONFIGURATION SETTINGS
+-- âš™ï¸ CONFIGURATION SETTINGS
 -- ==========================================
 local CONFIG = {
     -- Masukkan UserId pemain yang boleh menjadi Admin (Bisa lebih dari 1)

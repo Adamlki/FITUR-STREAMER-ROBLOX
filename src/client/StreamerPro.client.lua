@@ -1,3 +1,7 @@
+﻿-- ==========================================================
+-- FITUR BY DMS STUDIO - TIKTOK : jekychen01
+-- ==========================================================
+
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -27,13 +31,13 @@ local CONFIG_INSTANT_FEATURES = {
 }
 
 local CONFIG_HUD_TIMERS = {
-    JailTime = "🔒 Jail",
-    SlimTime = "🕴️ Slim",
-    DrunkTime = "🥴 Drunk",
-    BeatdownTime = "👊 Beatdown",
-    SpinCamTime = "🌀 SpinCam",
-    RocketTime = "🚀 Rocket",
-    RocketBomTime = "🚀💣 Rocket+Bom"
+    JailTime = "ðŸ”’ Jail",
+    SlimTime = "ðŸ•´ï¸ Slim",
+    DrunkTime = "ðŸ¥´ Drunk",
+    BeatdownTime = "ðŸ‘Š Beatdown",
+    SpinCamTime = "ðŸŒ€ SpinCam",
+    RocketTime = "ðŸš€ Rocket",
+    RocketBomTime = "ðŸš€ðŸ’£ Rocket+Bom"
 }
 
 local CONFIG_COLORS = {
@@ -588,7 +592,7 @@ SearchBtn.MouseButton1Click:Connect(function()
     SearchBtn.Text = "..."
     if not AdminFunc then return end
     local res = AdminFunc:InvokeServer("SearchPlayer", {Username = q})
-    SearchBtn.Text = "🔍 Search"
+    SearchBtn.Text = "ðŸ” Search"
     
     if res and res.success then
         selectedUserId = res.data.UserId

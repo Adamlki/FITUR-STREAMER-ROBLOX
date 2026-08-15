@@ -1,3 +1,7 @@
+﻿-- ==========================================================
+-- FITUR BY DMS STUDIO - TIKTOK : jekychen01
+-- ==========================================================
+
 local CONFIG = {
     DEFAULT_DURATION = 10,                          -- Waktu default berputar (detik)
     SPIN_SPEED = 180,                               -- Kecepatan putaran (derajat per detik)

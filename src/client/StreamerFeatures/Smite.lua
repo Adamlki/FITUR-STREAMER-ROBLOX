@@ -1,3 +1,7 @@
+﻿-- ==========================================================
+-- FITUR BY DMS STUDIO - TIKTOK : jekychen01
+-- ==========================================================
+
 local TweenService = game:GetService("TweenService")
 local Debris = game:GetService("Debris")
 
