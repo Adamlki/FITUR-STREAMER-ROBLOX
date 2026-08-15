@@ -17,8 +17,8 @@ local StreamerAccessDS = DataStoreService:GetDataStore("StreamerPro_AccessStore_
 -- ==========================================
 -- CONFIGURATION
 -- ==========================================
+-- Masukkan UserId pemain yang boleh menjadi Admin (Bisa lebih dari 1)
 local CONFIG = {
-    -- Masukkan UserId pemain yang boleh menjadi Admin (Bisa lebih dari 1)
     ADMIN_USER_IDS = {
         [8978185974] = true, -- Contoh
         [12345678] = true, -- Contoh
