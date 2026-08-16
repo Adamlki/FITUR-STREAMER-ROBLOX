@@ -23,6 +23,7 @@ local CONFIG = {
 }
 
 local Feature = {}
+Feature._animTracks = setmetatable({}, {__mode = "k"})
 
 local function DoBeatdownHit(player, nailong)
     local character = player.Character
@@ -43,10 +44,17 @@ local function DoBeatdownHit(player, nailong)
     if nHum then
         local animator = nHum:FindFirstChildOfClass("Animator")
         if animator then
-            local anim = Instance.new("Animation")
-            anim.AnimationId = CONFIG.ANIMATION_ID
-            local animTrack = animator:LoadAnimation(anim)
-            animTrack:Play()
+            local animTrack = Feature._animTracks[animator]
+            if not animTrack then
+                local anim = Instance.new("Animation")
+                anim.AnimationId = CONFIG.ANIMATION_ID
+                animTrack = animator:LoadAnimation(anim)
+                Feature._animTracks[animator] = animTrack
+            end
+            
+            animTrack:Play(0)
+            animTrack.TimePosition = 0
+            animTrack:AdjustSpeed(2.5)
         end
     end
     
@@ -126,17 +134,21 @@ function Feature.UpdateJeky(deltaTime)
                     if nailongTemplate then
                         existingNailong = nailongTemplate:Clone()
                         existingNailong.Name = nailongName
-                        for _, part in ipairs(existingNailong:GetDescendants()) do
-                            if part:IsA("BasePart") then
-                                part.CanCollide = false
-                                part.Anchored = true
-                            end
-                        end
                         local nHum = existingNailong:FindFirstChildOfClass("Humanoid") or existingNailong:FindFirstChildOfClass("AnimationController")
                         if not nHum then nHum = Instance.new("AnimationController", existingNailong) end
                         local animator = nHum:FindFirstChildOfClass("Animator")
                         if not animator then animator = Instance.new("Animator", nHum) end
                         existingNailong.Parent = workspace
+                        
+                        local nailongHRP = existingNailong:FindFirstChild("HumanoidRootPart")
+                        if nailongHRP then
+                            nailongHRP.Anchored = true
+                        end
+                        for _, part in ipairs(existingNailong:GetDescendants()) do
+                            if part:IsA("BasePart") then
+                                part.CanCollide = false
+                            end
+                        end
                     end
                 end
                 
